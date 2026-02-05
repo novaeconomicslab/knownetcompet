@@ -16,12 +16,7 @@ KNOW-NET-COMPET is an ELT (Extract, Load, Transform) pipeline and knowledge grap
 ### Supported by
 
 <p align="center">
-  <img src="./assets/fct.png" alt="FCT - Fundação para a Ciência e a Tecnologia" height="80"/>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  <img src="./assets/magIC.png" alt="NOVA IMS MagIC - Information Management Research Center" height="80"/>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  <img src="./assets/lab-image.png" alt="NOVA Applied Economics & Analytics Lab" height="80"/>
-  <img src="./assets/prr.png" alt="PPR (Plano de Recuperação e Resiliência), República Portuguesa, Financiado pela União Europeia (NextGenerationEU)" height="80"/>
+  <img src="./assets/support.png" alt="FCT - Fundação para a Ciência e a Tecnologia" height="200"/>
 </p>
 
 <p align="center">
