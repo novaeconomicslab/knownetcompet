@@ -1,0 +1,67 @@
+@startuml
+skinparam nodesep 10
+hide circle
+hide empty members
+class "Tender" [[{None}]] {
+    {field} id : string  
+    {field} numberOfTenderers : integer  
+    {field} procurement_method : procurementMethodEnum  
+    {field} procedure_type : string  
+    {field} publication_date : datetime  
+    {field} close_date : datetime  
+    {field} environmental_criteria : boolean  
+    {field} material_criteria : boolean  
+    {field} centralized_procedure : boolean  
+}
+class "Contract" [[{None}]] {
+    {field} id : string  
+    {field} signing_date : datetime  
+    {field} initial_value : float  
+    {field} final_value : float  
+    {field} execution_deadline : integer  
+    {field} contract_type : ContractTypeEnum  [1..*]
+    {field} causes_deadline_change : string  
+    {field} causes_price_change : string  
+}
+class "Entity" [[{None}]] {
+    {field} id : string  
+    {field} entity_name : string  
+    {field} valid_nif : boolean  
+}
+"Tender" --> "1" "Contract" : "AWARDS_CONTRACT"
+"Entity" --> "0..*" "Tender" : "IS_PROCURING_ENTITY_FOR"
+"Entity" --> "0..*" "Tender" : "IS_TENDERER_FOR"
+"Entity" --> "0..*" "Tender" : "WON_TENDER"
+class "Person" [[{None}]] {
+    {field} id : string  
+    {field} person_name : string  
+    {field} pep : boolean  
+}
+"Person" --> "0..*" "Entity" : "ASSOCIATED_WITH"
+class "Location" [[{None}]] {
+    {field} id : string  
+    {field} country : string  
+    {field} district : string  
+    {field} municipality : string  
+}
+"Location" --> "0..1" "Location" : "BROADER"
+"Location" --> "0..*" "Entity" : "ADMINISTERED_BY"
+"Contract" *--> "0..*" "Location" : "EXECUTED_AT_LOCATION"
+"Entity" *--> "0..1" "Location" : "LOCATED_AT"
+"Entity" --> "0..*" "Entity" : "SHAREHOLDER_OF"
+"Entity" --> "0..*" "Entity" : "COMPETED_WITH"
+"Entity" --> "0..*" "Contract" : "SIGNED_CONTRACT"
+class "Document" [[{None}]] {
+    {field} id : string  
+    {field} document_url : string  
+    {field} document_description : string  
+}
+"Contract" *--> "0..*" "Document" : "HAS_DOCUMENT"
+class "CPV" [[{None}]] {
+    {field} id : string  
+    {field} label : string  
+    {field} level : string  
+}
+"Contract" --> "0..*" "CPV" : "HAS_CPV_CLASSIFICATION"
+"CPV" --> "0..1" "CPV" : "BROADER"
+@enduml

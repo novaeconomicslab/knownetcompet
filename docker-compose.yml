@@ -1,0 +1,49 @@
+services:
+  couchdb:
+    image: couchdb:3
+    container_name: couchdb
+    ports:
+      - "5984:5984"
+    environment:
+      COUCHDB_USER: admin
+      COUCHDB_PASSWORD: ${COUCHDB_PASSWORD}
+      COUCHDB_SECRET: ${COUCHDB_SECRET}
+    volumes:
+      # Direct Bind Mount
+      - ${DATABASES_ROOT}/CouchDB/couchdb-data:/opt/couchdb/data
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:5984/_up" ]
+      interval: 10s
+      timeout: 3s
+      retries: 10
+    restart: unless-stopped
+
+  neo4j:
+    image: neo4j:2025.08.0
+    container_name: neo4j
+    restart: unless-stopped
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    environment:
+      NEO4J_AUTH: none
+      NEO4J_PLUGINS: '["apoc","graph-data-science"]'
+      NEO4J_apoc_export_file_enabled: "true"
+      NEO4J_apoc_import_file_enabled: "true"
+      NEO4J_server_directories_import: "/import"
+      NEO4J_dbms_security_procedures_unrestricted: "apoc.*,gds.*"
+    volumes:
+      # Direct Bind Mounts using your NVME path
+      - ${DATABASES_ROOT}/Neo4j/neo4j-data:/data
+      - ${DATABASES_ROOT}/Neo4j/neo4j-logs:/logs
+      - ${DATABASES_ROOT}/Neo4j/neo4j-import:/import
+      - ${DATABASES_ROOT}/Neo4j/neo4j-backups:/backups
+
+  neodash:
+    image: neo4jlabs/neodash:2.4.11
+    container_name: neodash
+    ports:
+      - "5005:5005"
+    restart: unless-stopped
+    depends_on:
+      - neo4j
